@@ -18,21 +18,21 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
-        if(Auth::guard('admin')->check()){
-            $admin=Admin::where('email',Auth::guard('admin')->user()->email)->first();
-            if($admin->hasrole('superadmin')){
+        if (Auth::guard('admin')->check()) {
+            $admin = Admin::where('email', Auth::guard('admin')->user()->email)->first();
+            if ($admin->hasrole('superadmin')) {
                 return redirect()->intended(RouteServiceProvider::ADMINHOME);
-            }else if($admin->hasrole('admin')){
+            } else if ($admin->hasrole('admin')) {
                 return redirect('admin/dashboard');
-            }else if($admin->hasrole('manager')){
+            } else if ($admin->hasrole('manager')) {
                 return redirect('order/manager/dashboard');
-            }else if($admin->hasrole('user')){
+            } else if ($admin->hasrole('user')) {
                 return redirect('order/dashboard');
-            }else{
+            } else {
                 abort(403);
             }
             abort(403);
-        }else{
+        } else {
             return view('backend.auth.login');
         }
     }
@@ -45,22 +45,22 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
-        if(Auth::guard('admin')->attempt(['email'=>$request->email,'password'=>$request->password])){
-            $admin=Admin::where('email',$request->email)->first();
-            if($admin->hasrole('superadmin')){
+        if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password])) {
+            $admin = Admin::where('email', $request->email)->first();
+            if ($admin->hasrole('superadmin')) {
                 return redirect()->intended(RouteServiceProvider::ADMINHOME);
-            }else if($admin->hasrole('admin')){
+            } else if ($admin->hasrole('admin')) {
                 return redirect('admin/dashboard');
-            }else if($admin->hasrole('manager')){
+            } else if ($admin->hasrole('manager')) {
                 return redirect('order/manager/dashboard');
-            }else if($admin->hasrole('user')){
+            } else if ($admin->hasrole('user')) {
                 return redirect('order/dashboard');
-            }else{
+            } else {
                 abort(403);
             }
             abort(403);
-        }else{
-            return redirect()->back()->with('error','Information Does Not Match');
+        } else {
+            return redirect()->back()->with('error', 'Information Does Not Match');
         }
 
     }
@@ -82,28 +82,31 @@ class AuthenticatedSessionController extends Controller
         return redirect('/admin/login');
     }
 
-    public function dashboard(){
-        $admin=Admin::where('email',Auth::guard('admin')->user()->email)->first();
-        if($admin->hasrole('superadmin')){
+    public function dashboard()
+    {
+        $admin = Admin::where('email', Auth::guard('admin')->user()->email)->first();
+        if ($admin->hasAnyRole(['superadmin', 'admin', 'manager'])) {
             return view('backend.content.maincontent');
-        }else{
+        } else {
             abort(403);
         }
     }
 
-    public function managerdashboard(){
-        $admin=Admin::where('email',Auth::guard('admin')->user()->email)->first();
-        if($admin->hasrole(['superadmin','admin','manager'])){
+    public function managerdashboard()
+    {
+        $admin = Admin::where('email', Auth::guard('admin')->user()->email)->first();
+        if ($admin->hasrole(['superadmin', 'admin', 'manager'])) {
             return view('admin.content.adminmaincontent');
-        }else{
+        } else {
             abort(403);
         }
     }
-    public function userdashboard(){
-        $admin=Admin::where('email',Auth::guard('admin')->user()->email)->first();
-        if($admin->hasrole(['superadmin','admin','manager','user'])){
+    public function userdashboard()
+    {
+        $admin = Admin::where('email', Auth::guard('admin')->user()->email)->first();
+        if ($admin->hasrole(['superadmin', 'admin', 'manager', 'user'])) {
             return view('admin.content.adminmaincontent');
-        }else{
+        } else {
             abort(403);
         }
     }

@@ -1,16 +1,18 @@
 <div class="sidebar pe-4 pb-3">
     <nav class="navbar bg-secondary navbar-dark">
         <a href="{{ url('/admin/dashboard') }}" class="navbar-brand mx-4 mb-3">
-            <h3 class="text-primary"><img src="{{asset(\App\Models\Basicinfo::first()->logo)}}" alt="logo" style="width:100%"></h3>
+            <h3 class="text-primary"><img
+                    src="{{asset(Str::replaceFirst('public', '', \App\Models\Basicinfo::first()->logo))}}" alt="logo"
+                    style="width:100%"></h3>
         </a>
         <div class="d-flex align-items-center ms-4 mb-4">
             <div class="position-relative">
                 @if(isset(Auth::guard('admin')->user()->profile))
-                <img class="rounded-circle" src="{{ asset(Auth::guard('admin')->user()->profile) }}" alt=""
-                    style="width: 40px; height: 40px;">
+                    <img class="rounded-circle" src="{{ asset(Auth::guard('admin')->user()->profile) }}" alt=""
+                        style="width: 40px; height: 40px;">
                 @else
-                <img class="rounded-circle" src="{{ asset('public/backend/') }}/img/user.jpg" alt=""
-                    style="width: 40px; height: 40px;">
+                    <img class="rounded-circle" src="{{ asset('/backend/') }}/img/user.jpg" alt=""
+                        style="width: 40px; height: 40px;">
                 @endif
                 <div
                     class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
@@ -72,7 +74,7 @@
                     class="fa fa-keyboard me-2"></i>Products</a>
             <a href="{{ url('order/dashboard') }}" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Order
                 Panel</a>
-            
+
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
                         class="far fa-file-alt me-2"></i>Pages</a>
@@ -112,9 +114,8 @@
                     <a href="{{ route('admin.policymenus.index') }}" class="dropdown-item">Policy Menu</a>
                 </div>
             </div>
-			<a href="https://m.me/official.elitedesign" class="nav-item nav-link"><i class="fab fa-facebook-messenger me-2"></i>Get Support</a>
+            <a href="https://m.me/official.elitedesign" class="nav-item nav-link"><i
+                    class="fab fa-facebook-messenger me-2"></i>Get Support</a>
         </div>
     </nav>
 </div>
-
- 
