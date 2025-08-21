@@ -16,26 +16,26 @@ class RolePermissionSeeder extends Seeder
     public function run()
     {
         // create role
-        $rolesuperadmin = Role::create(['name' => 'superadmin','guard_name' => 'admin']);
-        $roleadmin = Role::create(['name' => 'admin','guard_name' => 'admin']);
-        $rolemanager = Role::create(['name' => 'manager','guard_name' => 'admin']);
-        $roleuser = Role::create(['name' => 'user','guard_name' => 'admin']);
+        $rolesuperadmin = Role::firstOrCreate(['name' => 'superadmin', 'guard_name' => 'admin']);
+        $roleadmin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'admin']);
+        $rolemanager = Role::firstOrCreate(['name' => 'manager', 'guard_name' => 'admin']);
+        $roleuser = Role::firstOrCreate(['name' => 'user', 'guard_name' => 'admin']);
 
         //permission
         $permissions = [
 
             // dashboard permission
             [
-                'group_name'=>'dashboard',
-                'permissions'=>[
+                'group_name' => 'dashboard',
+                'permissions' => [
                     'dashboard.view',
                     'dashboard.edit',
                 ]
             ],
             // admin permission
             [
-                'group_name'=>'admin',
-                'permissions'=>[
+                'group_name' => 'admin',
+                'permissions' => [
                     'admin.create',
                     'admin.view',
                     'admin.edit',
@@ -47,8 +47,8 @@ class RolePermissionSeeder extends Seeder
 
             // role permission
             [
-                'group_name'=>'role',
-                'permissions'=>[
+                'group_name' => 'role',
+                'permissions' => [
                     'role.create',
                     'role.view',
                     'role.edit',
@@ -60,8 +60,8 @@ class RolePermissionSeeder extends Seeder
 
             //profile permission
             [
-                'group_name'=>'profile',
-                'permissions'=>[
+                'group_name' => 'profile',
+                'permissions' => [
                     'profile.view',
                     'profile.edit',
                 ]
@@ -69,8 +69,8 @@ class RolePermissionSeeder extends Seeder
 
             // category permission
             [
-                'group_name'=>'category',
-                'permissions'=>[
+                'group_name' => 'category',
+                'permissions' => [
                     'category.create',
                     'category.view',
                     'category.edit',
@@ -82,12 +82,12 @@ class RolePermissionSeeder extends Seeder
         ];
 
         // create and assign permission
-        for($i=0;$i<count($permissions);$i++){
+        for ($i = 0; $i < count($permissions); $i++) {
             // permission group
             $permissionGroup = $permissions[$i]['group_name'];
-            for($j=0;$j<count($permissions[$i]['permissions']);$j++){
+            for ($j = 0; $j < count($permissions[$i]['permissions']); $j++) {
                 //create permission
-                $permission = Permission::create(['name' => $permissions[$i]['permissions'][$j],'group_name'=>$permissionGroup,'guard_name' => 'admin']);
+                $permission = Permission::firstOrCreate(['name' => $permissions[$i]['permissions'][$j], 'group_name' => $permissionGroup, 'guard_name' => 'admin']);
                 $rolesuperadmin->givePermissionTo($permission);
                 $permission->assignRole($rolesuperadmin);
             }

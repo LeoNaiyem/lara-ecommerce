@@ -50,12 +50,18 @@ class InformationSeeder extends Seeder
     public function run()
     {
         foreach ($this->informations as $index => $information) {
-            $result = Information::create($information);
-            if(!$result) {
-                $this->command->info("Insert failed at record $index.");
+            $result = Information::updateOrInsert(
+                ['key' => $information['key']], // Check for uniqueness by 'key'
+                ['value' => $information['value'], 'updated_at' => now(), 'created_at' => now()]
+            );
+
+            if (!$result) {
+                $this->command->info("Insert or update failed at record $index.");
                 return;
             }
         }
-        $this->command->info('Inserted ' . count($this->informations) . ' records');
+
+        $this->command->info('Processed ' . count($this->informations) . ' records successfully.');
     }
+
 }

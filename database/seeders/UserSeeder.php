@@ -19,9 +19,9 @@ class UserSeeder extends Seeder
         if(is_null($checkuser)){
             $user = new User();
             $user->name= 'User';
-            $user->username= 'users';
-            $user->my_referral_id= 'users';
-            $user->referral_by= 'Admin123';
+            // $user->username= 'users';
+            // $user->my_referral_id= 'users';
+            // $user->referral_by= 'Admin123';
             $user->email= 'user@gmail.com';
             $user->phone= '01647368141';
             $user->password= Hash::make('password');

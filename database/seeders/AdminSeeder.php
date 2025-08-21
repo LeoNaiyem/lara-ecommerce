@@ -15,14 +15,14 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
-        $checkadmin =Admin::where('email','md.muraiem@gmail.com')->first();
+        $checkadmin =Admin::where('email','naiyem@gmail.com')->first();
         if(is_null($checkadmin)){
             $user = new Admin();
-            $user->name= 'Abdullah Md. Muraiem(Super Admin)';
-            $user->phone= '01928558628';
-            $user->email= 'md.muraiem@gmail.com';
+            $user->name= 'Naiyem Hossain(Super Admin)';
+            $user->phone= '01635663575';
+            $user->email= 'naiyem@gmail.com';
             $user->status= 'Active';
-            $user->password= Hash::make('password');
+            $user->password= Hash::make('111111');
             $user->save();
         }
     }

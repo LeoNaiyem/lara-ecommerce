@@ -8,52 +8,39 @@ use Spatie\Permission\Models\Permission;
 
 class UserRolePermissionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-        // create role
-        $roleuser = Role::create(['name' => 'user','guard_name' => 'web']);
+        // Create role or get existing
+        $roleuser = Role::firstOrCreate(['name' => 'user', 'guard_name' => 'web']);
 
-        //permission
+        // Permission groups and permissions
         $permissions = [
-
-            // dashboard permission
             [
-                'group_name'=>'dashboard',
-                'permissions'=>[
+                'group_name' => 'dashboard',
+                'permissions' => [
                     'dashboard.view',
                     'dashboard.edit',
-                ]
+                ],
             ],
-
-            //profile permission
             [
-                'group_name'=>'profile',
-                'permissions'=>[
+                'group_name' => 'profile',
+                'permissions' => [
                     'profile.view',
                     'profile.edit',
-                ]
+                ],
             ],
-
-
         ];
 
-        // create and assign permission
-        for($i=0;$i<count($permissions);$i++){
-            // permission group
-            $permissionGroup = $permissions[$i]['group_name'];
-            for($j=0;$j<count($permissions[$i]['permissions']);$j++){
-                //create permission
-                $permission = Permission::create(['name' => $permissions[$i]['permissions'][$j],'group_name'=>$permissionGroup,'guard_name' => 'web']);
+        // Loop and create permissions if not exist, then assign
+        foreach ($permissions as $permissionGroup) {
+            foreach ($permissionGroup['permissions'] as $permissionName) {
+                $permission = Permission::firstOrCreate([
+                    'name' => $permissionName,
+                    'group_name' => $permissionGroup['group_name'],
+                    'guard_name' => 'web',
+                ]);
                 $roleuser->givePermissionTo($permission);
-                $permission->assignRole($roleuser);
             }
-
-
         }
     }
 }
